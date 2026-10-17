@@ -1,0 +1,40 @@
+[
+	{
+		"save": "GradeToggle",
+		"name": "Layawns grade visualizer",
+		"type": "bool",
+		"description": "Adds a grade visualizer that displays your current rating on screen with a cool graphic drawn by yours truly\n(This action may improve YOUR performance, though it may increase stress).",
+		"value": false
+	},
+    {
+		"save": "GradeGraphicSkin",
+		"name": "Grade graphic style: ",
+		"type": "string",
+		"description": "Pick a style to display your grading :) More styles coming soon!!\n(if you toggled the visualiser on)",
+		"value": "Graffiti",
+		"format": "%v",
+
+		"options": ["Graffiti", "Inverted"]
+	},
+	{
+		"save": "HealthBarToggle",
+		"name": "Layawns custom healthbar",
+		"type": "bool",
+		"description": "Adds a new design for the healthbar in game",
+		"value": false
+	},
+	{
+		"save": "RatingsToggle",
+		"name": "Layawns custom rating graphics",
+		"type": "bool",
+		"description": "Adds new rating graphics in game",
+		"value": false
+	},
+	{
+		"save": "HardcoreMode",
+		"name": "Hardcore Mode",
+		"type": "bool",
+		"description": "Hardcore Mode implements a Kade Engine type accuracy system.\nHitting sustain notes no longer heals, missing takes more damage and hitting notes badly will also take damage now.\n(Scripted by FelixBand)",
+		"value": false
+	}
+]

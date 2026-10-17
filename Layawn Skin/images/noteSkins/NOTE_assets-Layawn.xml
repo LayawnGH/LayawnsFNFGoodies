@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker https://www.codeandweb.com/texturepacker -->
+<!-- $TexturePacker:SmartUpdate:6ee8fd0ca33536f4a2b486210cd96d25:bcf0f792950501b975d0d5aca0fecf18:2661db904c977bee2cd5408c05bcc247$ -->
+<TextureAtlas imagePath="Layawn Note skin.png" width="510" height="1512">
+    <SubTexture name="arrowDOWN0000" x="357" y="1" width="150" height="170"/>
+    <SubTexture name="arrowLEFT0000" x="1" y="782" width="170" height="150"/>
+    <SubTexture name="arrowRIGHT0000" x="173" y="782" width="170" height="150"/>
+    <SubTexture name="arrowUP0000" x="357" y="173" width="150" height="170"/>
+    <SubTexture name="blue hold end0000" x="1" y="1232" rotated="true" width="43" height="50"/>
+    <SubTexture name="blue hold piece0000" x="1" y="1284" rotated="true" width="41" height="50"/>
+    <SubTexture name="blue0000" x="1" y="158" rotated="true" width="176" height="154"/>
+    <SubTexture name="down confirm0000" x="179" y="158" rotated="true" width="176" height="154"/>
+    <SubTexture name="down confirm0001" x="1" y="314" rotated="true" width="176" height="154"/>
+    <SubTexture name="down confirm0002" x="357" y="345" width="150" height="170"/>
+    <SubTexture name="down confirm0003" x="357" y="345" width="150" height="170"/>
+    <SubTexture name="down press0000" x="1" y="1336" width="140" height="158"/>
+    <SubTexture name="down press0001" x="333" y="1190" rotated="true" width="164" height="144"/>
+    <SubTexture name="green hold end0000" x="1" y="1232" rotated="true" width="43" height="50"/>
+    <SubTexture name="green hold piece0000" x="1" y="1284" rotated="true" width="41" height="50"/>
+    <SubTexture name="green0000" x="179" y="314" rotated="true" width="176" height="154"/>
+    <SubTexture name="left confirm0000" x="1" y="470" width="175" height="154"/>
+    <SubTexture name="left confirm0001" x="178" y="470" width="175" height="154"/>
+    <SubTexture name="left confirm0002" x="1" y="934" width="170" height="150"/>
+    <SubTexture name="left confirm0003" x="1" y="934" width="170" height="150"/>
+    <SubTexture name="left press0000" x="303" y="1336" rotated="true" width="138" height="158"/>
+    <SubTexture name="left press0001" x="1" y="1086" width="164" height="144"/>
+    <SubTexture name="purple hold end0000" x="1" y="1232" rotated="true" width="43" height="50"/>
+    <SubTexture name="purple hold piece0000" x="1" y="1284" rotated="true" width="41" height="50"/>
+    <SubTexture name="purple0000" x="1" y="1" width="176" height="155"/>
+    <SubTexture name="red hold end0000" x="1" y="1232" rotated="true" width="43" height="50"/>
+    <SubTexture name="red hold piece0000" x="1" y="1284" rotated="true" width="41" height="50"/>
+    <SubTexture name="red0000" x="179" y="1" width="176" height="155"/>
+    <SubTexture name="right confirm0000" x="1" y="626" width="175" height="154"/>
+    <SubTexture name="right confirm0001" x="178" y="626" width="175" height="154"/>
+    <SubTexture name="right confirm0002" x="173" y="934" width="170" height="150"/>
+    <SubTexture name="right confirm0003" x="173" y="934" width="170" height="150"/>
+    <SubTexture name="right press0000" x="143" y="1373" width="158" height="138"/>
+    <SubTexture name="right press0001" x="167" y="1086" width="164" height="144"/>
+    <SubTexture name="up confirm0000" x="355" y="517" width="154" height="175"/>
+    <SubTexture name="up confirm0001" x="355" y="694" width="154" height="175"/>
+    <SubTexture name="up confirm0002" x="345" y="871" width="150" height="170"/>
+    <SubTexture name="up confirm0003" x="345" y="871" width="150" height="170"/>
+    <SubTexture name="up press0000" x="143" y="1232" rotated="true" width="158" height="139"/>
+    <SubTexture name="up press0001" x="345" y="1043" rotated="true" width="164" height="145"/>
+</TextureAtlas>

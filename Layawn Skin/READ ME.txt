@@ -1,0 +1,11 @@
+-----------------------------------------------------------------------------------
+To use my noteskin please set the mod to global:
+
+Settings -> mods -> LayawnSkin -> Global
+
+My modpack contains a grading graphic! it'll more clearly show what grade you have at the current moment. (SFC, GFC, FC, and so on)
+
+Settings -> mods -> LayawnSkin -> settings -> Grade Graphic
+
+Don't do drugs make your parents proud or something idk
+-----------------------------------------------------------------------------------

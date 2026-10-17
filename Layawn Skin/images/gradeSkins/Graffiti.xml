@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker https://www.codeandweb.com/texturepacker -->
+<!-- $TexturePacker:SmartUpdate:7ecb871923e533b21f7ad5d0a1db268f:445313c2665a2d0a7d828bb844f12ae1:9f6c5509aeba914f95e5ec7fa527c75f$ -->
+<TextureAtlas imagePath="Grading.png" width="1879" height="1450">
+    <SubTexture name="GradeCLEAR" x="859" y="1" rotated="true" width="434" height="931" frameX="40" frameY="-90" frameWidth="434" frameHeight="931"/>
+    <SubTexture name="GradeFC" x="1295" y="1" rotated="true" width="583" height="649" frameX="-120" frameY="-20" frameWidth="583" frameHeight="649"/>
+    <SubTexture name="GradeGFC" x="1" y="591" rotated="true" width="584" height="858" frameX="0" frameY="-20" frameWidth="584" frameHeight="858"/> 
+    <SubTexture name="GradeNM" x="1354" y="652" rotated="true" width="461" height="585" frameX="-120" frameY="-70" frameWidth="461" frameHeight="585"/>
+    <SubTexture name="GradeSDCB" x="587" y="934" width="765" height="489" frameX="-50" frameY="-80" frameWidth="765" frameHeight="489"/>
+    <SubTexture name="GradeSFC" x="1" y="1" width="856" height="588"/>
+</TextureAtlas>

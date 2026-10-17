@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker https://www.codeandweb.com/texturepacker -->
+<!-- $TexturePacker:SmartUpdate:b4fae5c7f78e2f681591113a34a0a66f:1964c7fd9c3300b95a5e9469b00820b4:1f2505a589778b451c972f745fc36ecb$ -->
+<TextureAtlas imagePath="character-Layawn.png" width="2002" height="1555">
+    <SubTexture name="layawn_down0000" x="394" y="1260" rotated="true" width="351" height="184" frameX="-383" frameY="-152" frameWidth="960" frameHeight="600"/>
+    <SubTexture name="layawn_down0001" x="1592" y="798" width="184" height="354" frameX="-383" frameY="-149" frameWidth="960" frameHeight="600"/>
+    <SubTexture name="layawn_down0002" x="1778" y="805" width="184" height="357" frameX="-383" frameY="-146" frameWidth="960" frameHeight="600"/>
+    <SubTexture name="layawn_down0003" x="979" y="1188" width="184" height="360" frameX="-383" frameY="-143" frameWidth="960" frameHeight="600"/>
+    <SubTexture name="Layawn_Idle0000" x="1607" y="412" width="198" height="384" frameX="-382" frameY="-125" frameWidth="960" frameHeight="600"/>
+    <SubTexture name="Layawn_Idle0001" x="1607" y="412" width="198" height="384" frameX="-382" frameY="-125" frameWidth="960" frameHeight="600"/>
+    <SubTexture name="layawn_Idle0002" x="978" y="797" width="194" height="389" frameX="-384" frameY="-120" frameWidth="960" frameHeight="600"/>
+    <SubTexture name="Layawn_Idle0003" x="1807" y="412" width="194" height="391" frameX="-384" frameY="-118" frameWidth="960" frameHeight="600"/>
+    <SubTexture name="Layawn_Idle0004" x="1373" y="217" rotated="true" width="395" height="193" frameX="-385" frameY="-114" frameWidth="960" frameHeight="600"/>
+    <SubTexture name="Layawn_Idle0005" x="1193" y="790" rotated="true" width="397" height="194" frameX="-384" frameY="-112" frameWidth="960" frameHeight="600"/>
+    <SubTexture name="Layawn_Idle0006" x="402" y="861" width="194" height="397" frameX="-384" frameY="-112" frameWidth="960" frameHeight="600"/>
+    <SubTexture name="Layawn_Idle0007" x="598" y="834" width="193" height="397" frameX="-385" frameY="-112" frameWidth="960" frameHeight="600"/>
+    <SubTexture name="Layawn_Left0000" x="763" y="1" width="214" height="393" frameX="-349" frameY="-111" frameWidth="960" frameHeight="600"/>
+    <SubTexture name="Layawn_Left0001" x="1375" y="1" rotated="true" width="392" height="214" frameX="-351" frameY="-112" frameWidth="960" frameHeight="600"/>
+    <SubTexture name="Layawn_Left0003" x="1" y="1259" rotated="true" width="391" height="214" frameX="-351" frameY="-113" frameWidth="960" frameHeight="600"/>
+    <SubTexture name="layawn_missdown0000" x="1778" y="805" width="184" height="357" frameX="-383" frameY="-146" frameWidth="960" frameHeight="600"/>
+    <SubTexture name="layawn_missdown0001" x="1567" y="1349" rotated="true" width="352" height="182" frameX="-383" frameY="-149" frameWidth="960" frameHeight="600"/>
+    <SubTexture name="layawn_missdown0002" x="793" y="1208" width="184" height="346" frameX="-382" frameY="-155" frameWidth="960" frameHeight="600"/>
+    <SubTexture name="layawn_missdown0003" x="793" y="1208" width="184" height="346" frameX="-382" frameY="-155" frameWidth="960" frameHeight="600"/>
+    <SubTexture name="layawn_missleft0000" x="976" y="404" width="215" height="391" frameX="-358" frameY="-110" frameWidth="960" frameHeight="600"/>
+    <SubTexture name="layawn_missleft0001" x="979" y="1" rotated="true" width="394" height="213" frameX="-360" frameY="-106" frameWidth="960" frameHeight="600"/>
+    <SubTexture name="layawn_missleft0002" x="1" y="862" width="215" height="395" frameX="-354" frameY="-105" frameWidth="960" frameHeight="600"/>
+    <SubTexture name="layawn_missleft0003" x="1" y="862" width="215" height="395" frameX="-354" frameY="-105" frameWidth="960" frameHeight="600"/>
+    <SubTexture name="layawn_missright0000" x="1174" y="1174" rotated="true" width="391" height="183" frameX="-378" frameY="-113" frameWidth="960" frameHeight="600"/>
+    <SubTexture name="layawn_missright0001" x="793" y="810" width="183" height="396" frameX="-376" frameY="-107" frameWidth="960" frameHeight="600"/>
+    <SubTexture name="layawn_missright0002" x="979" y="216" rotated="true" width="392" height="186" frameX="-376" frameY="-111" frameWidth="960" frameHeight="600"/>
+    <SubTexture name="layawn_missright0003" x="979" y="216" rotated="true" width="392" height="186" frameX="-376" frameY="-111" frameWidth="960" frameHeight="600"/>
+    <SubTexture name="layawn_missup0000" x="787" y="396" width="187" height="412" frameX="-369" frameY="-86" frameWidth="960" frameHeight="600"/>
+    <SubTexture name="layawn_missup0001" x="1193" y="412" rotated="true" width="412" height="187" frameX="-369" frameY="-85" frameWidth="960" frameHeight="600"/>
+    <SubTexture name="layawn_missup0002" x="220" y="441" width="187" height="418" frameX="-369" frameY="-79" frameWidth="960" frameHeight="600"/>
+    <SubTexture name="layawn_missup0003" x="220" y="441" width="187" height="418" frameX="-369" frameY="-79" frameWidth="960" frameHeight="600"/>
+    <SubTexture name="layawn_right0000" x="1174" y="986" rotated="true" width="390" height="186" frameX="-378" frameY="-114" frameWidth="960" frameHeight="600"/>
+    <SubTexture name="layawn_right0001" x="1165" y="1359" rotated="true" width="391" height="185" frameX="-378" frameY="-113" frameWidth="960" frameHeight="600"/>
+    <SubTexture name="layawn_right0002" x="1567" y="1164" rotated="true" width="391" height="183" frameX="-378" frameY="-113" frameWidth="960" frameHeight="600"/>
+    <SubTexture name="layawn_right0003" x="218" y="862" width="182" height="392" frameX="-378" frameY="-112" frameWidth="960" frameHeight="600"/>
+    <SubTexture name="layawn_taunt0000" x="1" y="441" width="217" height="419" frameX="-356" frameY="-86" frameWidth="960" frameHeight="600"/>
+    <SubTexture name="layawn_taunt0001" x="544" y="1" width="217" height="414" frameX="-356" frameY="-91" frameWidth="960" frameHeight="600"/>
+    <SubTexture name="layawn_taunt0002" x="272" y="1" width="270" height="432" frameX="-304" frameY="-73" frameWidth="960" frameHeight="600"/>
+    <SubTexture name="layawn_taunt0003" x="1" y="1" width="269" height="438" frameX="-304" frameY="-67" frameWidth="960" frameHeight="600"/>
+    <SubTexture name="layawn_taunt0004" x="1" y="1" width="269" height="438" frameX="-304" frameY="-67" frameWidth="960" frameHeight="600"/>
+    <SubTexture name="layawn_up0000" x="409" y="435" width="187" height="416" frameX="-371" frameY="-82" frameWidth="960" frameHeight="600"/>
+    <SubTexture name="layawn_up0001" x="598" y="417" width="187" height="415" frameX="-369" frameY="-83" frameWidth="960" frameHeight="600"/>
+    <SubTexture name="layawn_up0002" x="1193" y="601" rotated="true" width="412" height="187" frameX="-369" frameY="-86" frameWidth="960" frameHeight="600"/>
+    <SubTexture name="layawn_up0003" x="1770" y="1" width="187" height="409" frameX="-369" frameY="-89" frameWidth="960" frameHeight="600"/>
+</TextureAtlas>
