@@ -1,4 +1,9 @@
 function onCreatePost()
+    if not getModSetting('CRTFilter') then
+        close()
+        return
+    end
+
     if getPropertyFromClass("states.PlayState", "isPixelStage") then
         makeLuaSprite('crtController', '', 0, 0)
 

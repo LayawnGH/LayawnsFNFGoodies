@@ -36,5 +36,12 @@
 		"type": "bool",
 		"description": "Hardcore Mode implements a Kade Engine type accuracy system.\nHitting sustain notes no longer heals, missing takes more damage and hitting notes badly will also take damage now.\n(Scripted by FelixBand)",
 		"value": false
+	},
+	{
+		"save": "CRTFilter",
+		"name": "Awesome CRT Filter",
+		"type": "bool",
+		"description": "Adds a cool CRT filter for pixelated stages to emulate the visuals of that era.\n(Made by FelixBand)",
+		"value": false
 	}
 ]
