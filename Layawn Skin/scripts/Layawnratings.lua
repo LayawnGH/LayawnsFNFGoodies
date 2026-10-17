@@ -5,6 +5,12 @@ function onCreatePost()
         close() 
         return
     end
+
+    if getPropertyFromClass("states.PlayState", "isPixelStage") then
+        close()
+        return
+    end
+
     runHaxeCode([[
         for (r in game.ratingsData) {
             switch (r.name) {
@@ -23,3 +29,4 @@ end
 function onDestroy()
     setPropertyFromClass('backend.ClientPrefs', 'data.colorRating', prevColorRating)
 end
+
