@@ -1,9 +1,9 @@
 [
 	{
 		"save": "GradeToggle",
-		"name": "Layawns grade visualizer",
+		"name": "Grade visualizer",
 		"type": "bool",
-		"description": "Adds a grade visualizer that displays your current rating on screen with a cool graphic drawn by yours truly\n(This action may improve YOUR performance, though it may increase stress).",
+		"description": "Adds a grade visualizer that displays your current rating on screen with a cool graphic.\n(Made by Layawn)",
 		"value": false
 	},
     {
@@ -18,16 +18,16 @@
 	},
 	{
 		"save": "HealthBarToggle",
-		"name": "Layawns custom healthbar",
+		"name": "Custom healthbar",
 		"type": "bool",
-		"description": "Adds a new design for the healthbar in game",
+		"description": "Adds a new design for the healthbar in game\n(Made by Layawn)",
 		"value": false
 	},
 	{
 		"save": "RatingsToggle",
-		"name": "Layawns custom rating graphics",
+		"name": "Custom rating graphics",
 		"type": "bool",
-		"description": "Adds new rating graphics in game",
+		"description": "Adds new rating graphics in game\n(Made by Layawn)",
 		"value": false
 	},
 	{
