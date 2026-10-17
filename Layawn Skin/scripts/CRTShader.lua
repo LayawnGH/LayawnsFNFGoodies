@@ -2,10 +2,10 @@ function onCreatePost()
     if getPropertyFromClass("states.PlayState", "isPixelStage") then
         makeLuaSprite('crtController', '', 0, 0)
 
-        runHaxeCode([[
-            game.initLuaShader('crt');
+        initLuaShader('FelixCRT')
 
-            var crtShader = game.createRuntimeShader('crt');
+        runHaxeCode([[
+            var crtShader = game.createRuntimeShader('FelixCRT');
 
             game.getLuaObject('crtController').shader = crtShader;
 
