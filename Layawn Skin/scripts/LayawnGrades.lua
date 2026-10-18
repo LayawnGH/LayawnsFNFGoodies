@@ -3,7 +3,6 @@
 -- Layawns first script (thats me!!!) --
 
 local defaultScale = 0.18 -- Defaultscale of the grade's graphic
-local beatCrochet = 0
 
 function onCreate()
     if not getModSetting('GradeToggle') then -- this checks if you have my grade graphics enabled from the mod settings tab, if not itll just not run lel
@@ -66,16 +65,17 @@ function setGradeSprite()
     end
 end
 
+-- crochet = How long in milliseconds a Beat takes
+
 function onBeatHit()
-    beatCrochet = (stepCrochet * 4) / 1000
     if curBeat % 2 == 0 then
         setProperty('coolgrades.angle', 10)
     else
         setProperty('coolgrades.angle', -10)
     end
-    doTweenAngle('tiltNormal', 'coolgrades', 0, beatCrochet, 'cubeOut')
+    doTweenAngle('tiltNormal', 'coolgrades', 0, crochet / 1000, 'cubeOut')
     setScale('coolgrades', 0.2, 0.05) -- Get carried over to custom function below
-    doTweenScales('gradebumpx', 'coolgrades', defaultScale, beatCrochet, 'cubeOut')
+    doTweenScales('gradebumpx', 'coolgrades', defaultScale, crochet / 1000, 'cubeOut')
 end
 
 function setScale(tag, scales, xtra, ystra) -- Custom function!
