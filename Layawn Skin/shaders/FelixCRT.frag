@@ -1,96 +1,70 @@
 #pragma header
 
-//=====================================================================
-//  CRT shader, extended from Timothy Lottes' public domain CRT shader
+// CRT-Lottes adaptation for Psych Engine / OpenFL.
+// Based on Timothy Lottes' public-domain CRT shader.
+// Original: https://github.com/libretro/glsl-shaders/blob/master/crt/shaders/crt-lottes.glsl
 //
-//  Original: curved screen, beam scanlines, phosphor shadow mask.
-//  Added:    phosphor bloom, brightness-dependent beam width,
-//            composite colour bleed, rounded glass, vignette, glass
-//            reflection, black level, and optional analog instability.
-//
-//  Everything is tweakable through the #defines below. The only uniform
-//  is `time` (seconds). Feed it every frame, e.g. in Lua:
-//      setShaderFloat('crtController', 'time', os.clock())
-//  Without it the picture still works, the animated effects just freeze.
-//=====================================================================
+// This version adds built-in anti-aliasing that mimics FNF's sprite
+// "antialiasing = true" (bilinear smoothing between art pixels), so your
+// sprites can stay on antialiasing = false and still get the soft look.
 
-uniform float time;
+// --- Tuning ---
+#define PIXEL_SCALE 6.0
+#define BLOOM_AMOUNT 0.15
+#define MASK_TYPE 3.0
 
-// One CRT "pixel" is this many real pixels. Bigger number = chunkier.
-#define res (openfl_TextureSize.xy / 6.0)
+// Source anti-aliasing (like FNF's sprite antialiasing on scaled-up pixel art).
+// This is the BOTTOM layer: it softens the art pixels themselves, before the
+// beam, scanlines, mask and bloom are applied, so none of those get blurred.
+//   0.0 = hard pixels (cheapest)
+//   1.0 = matches FNF's bilinear antialiasing on average (default)
+//   up to 2.0 = softer
+// Costs 5 texture reads per beam tap instead of 1.
+// Can be switched off at runtime per camera with the `aaDisable` uniform.
+#define AA_AMOUNT 1.0
 
-//---------------------------------------------------------------------
-// SCREEN SHAPE
-//---------------------------------------------------------------------
-vec2 warp = vec2(1.0 / 32.0, 1.0 / 24.0);   // barrel curvature (x, y)
-#define CORNER_RADIUS 0.035                // rounded glass corners, 0 = square
-#define VIGNETTE      0.35                 // dark corners, 0 = off
+uniform float warpX;
+uniform float warpY;
+uniform float hardScan;
+uniform float hardPix;
+uniform float maskDark;
+uniform float maskLight;
+uniform float brightBoost;
+uniform float bloomAmount;
+uniform float aaDisable; // 0 (default) = AA on, 1 = AA off (set from Lua)
 
-//---------------------------------------------------------------------
-// ELECTRON BEAM
-//---------------------------------------------------------------------
-float hardScan = -8.0;    // scanline sharpness (more negative = thinner lines)
-float hardPix  = -5.5;    // horizontal sharpness (-3 = soft, -8 = razor sharp)
-// Bright beams are fatter: at full white the scanlines nearly merge, dark
-// areas keep thin lines. 0 = every scanline has the same thickness.
-#define BEAM_BLOOM    4.0
-
-//---------------------------------------------------------------------
-// PHOSPHOR MASK
-//---------------------------------------------------------------------
-float maskDark  = 0.5;
-float maskLight = 1.5;
-// 0 = shadow mask (original), 1 = aperture grille (Trinitron stripes), 2 = off
-#define MASK_TYPE 0
-
-//---------------------------------------------------------------------
-// GLOW. This is what turns a lone red pixel into a glowing eye.
-//---------------------------------------------------------------------
-#define BLOOM_STRENGTH  1.3     // glow of small, isolated lights. 0 = no glow at all
-#define BLOOM_AREA_STRENGTH 0.45 // glow around big bright areas
-#define BLOOM_THRESHOLD 0.25    // only light brighter than this blooms (linear)
-#define BLOOM_WIDTH     0.2     // how fast the glow fades sideways (smaller = wider glow)
-
-//---------------------------------------------------------------------
-// COMPOSITE VIDEO. Colour is lower resolution than brightness and smears
-// slightly to the right, like on a real TV / console cable.
-//---------------------------------------------------------------------
-#define CHROMA_BLEED    0.5     // 0 = off, 1 = full
-#define SATURATION      1.15
-
-//---------------------------------------------------------------------
-// GLASS AND ANALOG
-//---------------------------------------------------------------------
-#define BRIGHTNESS      1.1
-#define BLACK_LEVEL     0.002   // blacks are never quite black on a CRT
-#define REFLECTION      0.0    // soft glare on the glass, 0 = off
-#define FLICKER         0.012   // tiny brightness pulsing, 0 = off
-#define HUM_BAR         0.04    // slow rolling brightness band, 0 = off
-#define GRAIN           0.025   // signal noise, 0 = off
-#define GLITCH          1   // rare horizontal wobble, 0 = off
-
-//=====================================================================
+#define res (openfl_TextureSize.xy / PIXEL_SCALE)
 
 float ToLinear1(float c)
 {
-    return c <= 0.04045 ? c / 12.92
+    return c <= 0.04045
+        ? c / 12.92
         : pow((c + 0.055) / 1.055, 2.4);
 }
 
 vec3 ToLinear(vec3 c)
 {
-    return vec3(ToLinear1(c.r), ToLinear1(c.g), ToLinear1(c.b));
+    return vec3(
+        ToLinear1(c.r),
+        ToLinear1(c.g),
+        ToLinear1(c.b)
+    );
 }
 
 float ToSrgb1(float c)
 {
-    return c < 0.0031308 ? c * 12.92
+    return c < 0.0031308
+        ? c * 12.92
         : 1.055 * pow(max(c, 0.0), 0.41666) - 0.055;
 }
 
 vec3 ToSrgb(vec3 c)
 {
-    return vec3(ToSrgb1(c.r), ToSrgb1(c.g), ToSrgb1(c.b));
+    return vec3(
+        ToSrgb1(c.r),
+        ToSrgb1(c.g),
+        ToSrgb1(c.b)
+    );
 }
 
 float Luma(vec3 c)
@@ -98,39 +72,48 @@ float Luma(vec3 c)
     return dot(c, vec3(0.2126, 0.7152, 0.0722));
 }
 
-vec3 ToYIQ(vec3 c)
+// Read the centre of one emulated pixel, given its integer cell coordinate.
+vec3 FetchCell(vec2 cell)
 {
-    return vec3(
-        dot(c, vec3(0.299,  0.587,  0.114)),
-        dot(c, vec3(0.596, -0.274, -0.322)),
-        dot(c, vec3(0.211, -0.523,  0.312))
-    );
-}
+    vec2 pos = (cell + 0.5) / res;
 
-vec3 FromYIQ(vec3 c)
-{
-    return vec3(
-        c.x + 0.956 * c.y + 0.621 * c.z,
-        c.x - 0.272 * c.y - 0.647 * c.z,
-        c.x - 1.106 * c.y + 1.703 * c.z
-    );
-}
-
-float Hash(vec2 p)
-{
-    p = fract(p * vec2(123.34, 456.21));
-    p += dot(p, p + 45.32);
-    return fract(p.x * p.y);
-}
-
-vec3 Fetch(vec2 pos, vec2 off)
-{
-    pos = (floor(pos * res + off) + 0.5) / res;   // sample the cell CENTRE (was the corner, which blurred by blending two texels)
-
-    if (max(abs(pos.x - 0.5), abs(pos.y - 0.5)) > 0.5)
+    if (pos.x < 0.0 || pos.x > 1.0 ||
+        pos.y < 0.0 || pos.y > 1.0)
         return vec3(0.0);
 
-    return ToLinear(texture2D(bitmap, pos).rgb);
+    return ToLinear(
+        texture2D(bitmap, pos).rgb * brightBoost
+    );
+}
+
+// Hard (nearest) sample of an emulated pixel. This is the original Fetch.
+vec3 FetchPoint(vec2 pos, vec2 offset)
+{
+    return FetchCell(floor(pos * res + offset));
+}
+
+// Source pixel with anti-aliasing. Each emulated pixel is blended with its
+// four neighbours using FIXED weights (about what bilinear filtering averages
+// to on scaled pixel art). The result depends only on which cell we are in,
+// never on the position inside the cell, so the beam / scanline / mask math
+// that follows still sees clean per-pixel values and stays crisp.
+// Blending happens in linear light, so edges don't darken.
+vec3 Fetch(vec2 pos, vec2 offset)
+{
+    vec2 cell = floor(pos * res + offset);
+    vec3 centre = FetchCell(cell);
+
+    if (aaDisable > 0.5 || AA_AMOUNT <= 0.001)
+        return centre;
+
+    float w = AA_AMOUNT * 0.1;
+
+    vec3 sides = FetchCell(cell + vec2( 1.0,  0.0))
+               + FetchCell(cell + vec2(-1.0,  0.0))
+               + FetchCell(cell + vec2( 0.0,  1.0))
+               + FetchCell(cell + vec2( 0.0, -1.0));
+
+    return centre * (1.0 - 4.0 * w) + sides * w;
 }
 
 vec2 Dist(vec2 pos)
@@ -144,67 +127,49 @@ float Gaus(float pos, float scale)
     return exp2(scale * pos * pos);
 }
 
-vec3 Horz3(vec2 pos, float off)
+// Three-tap horizontal reconstruction.
+vec3 Horz3(vec2 pos, float offset)
 {
-    vec3 b = Fetch(pos, vec2(-1.0, off));
-    vec3 c = Fetch(pos, vec2( 0.0, off));
-    vec3 d = Fetch(pos, vec2( 1.0, off));
+    vec3 a = Fetch(pos, vec2(-1.0, offset));
+    vec3 b = Fetch(pos, vec2( 0.0, offset));
+    vec3 c = Fetch(pos, vec2( 1.0, offset));
 
-    float dst = Dist(pos).x;
+    float d = Dist(pos).x;
 
-    float wb = Gaus(dst - 1.0, hardPix);
-    float wc = Gaus(dst, hardPix);
-    float wd = Gaus(dst + 1.0, hardPix);
+    float wa = Gaus(d - 1.0, hardPix);
+    float wb = Gaus(d, hardPix);
+    float wc = Gaus(d + 1.0, hardPix);
 
-    return (b * wb + c * wc + d * wd) / (wb + wc + wd);
+    return (a * wa + b * wb + c * wc)
+        / max(wa + wb + wc, 0.0001);
 }
 
-vec3 Horz5(vec2 pos, float off)
+// Five-tap horizontal reconstruction.
+vec3 Horz5(vec2 pos, float offset)
 {
-    vec3 a = Fetch(pos, vec2(-2.0, off));
-    vec3 b = Fetch(pos, vec2(-1.0, off));
-    vec3 c = Fetch(pos, vec2( 0.0, off));
-    vec3 d = Fetch(pos, vec2( 1.0, off));
-    vec3 e = Fetch(pos, vec2( 2.0, off));
+    vec3 a = Fetch(pos, vec2(-2.0, offset));
+    vec3 b = Fetch(pos, vec2(-1.0, offset));
+    vec3 c = Fetch(pos, vec2( 0.0, offset));
+    vec3 d = Fetch(pos, vec2( 1.0, offset));
+    vec3 e = Fetch(pos, vec2( 2.0, offset));
 
-    float dst = Dist(pos).x;
+    float x = Dist(pos).x;
 
-    float wa = exp2(-2.0 * (dst - 2.0) * (dst - 2.0));
-    float wb = exp2(-2.0 * (dst - 1.0) * (dst - 1.0));
-    float wc = exp2(-2.0 * dst * dst);
-    float wd = exp2(-2.0 * (dst + 1.0) * (dst + 1.0));
-    float we = exp2(-2.0 * (dst + 2.0) * (dst + 2.0));
+    float wa = Gaus(x - 2.0, hardPix);
+    float wb = Gaus(x - 1.0, hardPix);
+    float wc = Gaus(x, hardPix);
+    float wd = Gaus(x + 1.0, hardPix);
+    float we = Gaus(x + 2.0, hardPix);
 
     return (a * wa + b * wb + c * wc + d * wd + e * we)
         / max(wa + wb + wc + wd + we, 0.0001);
 }
 
-// Scanline weight. Brighter rows get a wider beam.
-float Scan(vec2 pos, float off, float lum)
+// Bright scanlines widen like an electron beam.
+float Scan(vec2 pos, float offset, float lum)
 {
-    float brightness = clamp(lum, 0.0, 1.0);
-    float beam = hardScan + BEAM_BLOOM * sqrt(brightness);
-
-    return Gaus(Dist(pos).y + off, beam);
-}
-
-// Soft, delayed chroma (I and Q) of the current row.
-vec2 ChromaRow(vec2 pos)
-{
-    float dx = Dist(pos).x;
-    vec2 iq = vec2(0.0);
-    float wsum = 0.0;
-
-    for (int k = -2; k <= 2; k++)
-    {
-        float x = float(k);
-        float w = exp2(-2.0 * (dx + x) * (dx + x));
-        // x - 1.0: the colour signal arrives a pixel late and lands to the right
-        iq += ToYIQ(Fetch(pos, vec2(x - 1.0, 0.0))).yz * w;
-        wsum += w;
-    }
-
-    return iq / wsum;
+    float beam = hardScan + 3.0 * clamp(lum, 0.0, 1.0);
+    return Gaus(Dist(pos).y + offset, beam);
 }
 
 vec3 Tri(vec2 pos)
@@ -217,77 +182,32 @@ vec3 Tri(vec2 pos)
     float wb = Scan(pos,  0.0, Luma(b));
     float wc = Scan(pos,  1.0, Luma(c));
 
-    vec3 col = a * wa + b * wb + c * wc;
-
-    // composite colour bleed: keep the sharp brightness, smear the colour
-    vec3 yiq = ToYIQ(col);
-    vec2 bleed = ChromaRow(pos) - ToYIQ(b).yz;
-    yiq.yz += bleed * CHROMA_BLEED * wb;
-
-    return max(FromYIQ(yiq), 0.0);
+    return max(a * wa + b * wb + c * wc, 0.0);
 }
 
-// Halo of light around bright things: light scattering in the glass and
-// the phosphor glow. It spreads far sideways and a little vertically, and
-// only light brighter than BLOOM_THRESHOLD takes part.
-// It is a "brightest neighbour, faded by distance" filter minus the pixel
-// itself, so a bright pixel gets a halo but the inside of a big bright
-// area is not made brighter. Small, isolated lights (glowing eyes, stars,
-// lamps) glow harder than big filled areas.
-// Cost: 39 texture reads per pixel. Shrink the loops (e.g. -4..4 and 0..0)
-// for a cheaper, smaller glow.
-vec3 Bloom(vec2 pos)
-{
-    vec2 d = Dist(pos);
-    vec3 centre = max(Fetch(pos, vec2(0.0)) - BLOOM_THRESHOLD, 0.0);
-    vec3 glow = vec3(0.0);
-    vec3 mean = vec3(0.0);
-    float wsum = 0.0;
-
-    for (int j = -1; j <= 1; j++)
-    {
-        for (int k = -6; k <= 6; k++)
-        {
-            vec2 o = vec2(float(k), float(j));
-            vec2 p = d + o;
-            float w = exp2(-(BLOOM_WIDTH * p.x * p.x + 1.5 * p.y * p.y));
-
-            vec3 c = max(Fetch(pos, o) - BLOOM_THRESHOLD, 0.0);
-            glow += c * w;
-            mean += c * w;
-            wsum += w;
-        }
-    }
-
-    glow /= max(wsum, 0.0001);
-    // how crowded with light is the neighbourhood? 0 = one lonely pixel, 1 = solid area
-    float fill = smoothstep(0.05, 0.5, dot(mean / wsum, vec3(1.0)) / max(dot(glow, vec3(1.0)), 0.0001));
-
-    return max(glow - centre, 0.0) * mix(BLOOM_STRENGTH, BLOOM_AREA_STRENGTH, fill);
-}
-
+// Barrel distortion.
 vec2 Warp(vec2 pos)
 {
     pos = pos * 2.0 - 1.0;
 
     pos *= vec2(
-        1.0 + pos.y * pos.y * warp.x,
-        1.0 + pos.x * pos.x * warp.y
+        1.0 + pos.y * pos.y * warpX,
+        1.0 + pos.x * pos.x * warpY
     );
 
     return pos * 0.5 + 0.5;
 }
 
+// RGB phosphor shadow mask.
 vec3 Mask(vec2 pos)
 {
-#if MASK_TYPE == 2
-    return vec3(1.0);
-#else
-    #if MASK_TYPE == 0
-        pos.x += pos.y * 3.0;
-    #endif
-
     vec3 mask = vec3(maskDark);
+
+    if (MASK_TYPE == 2.0)
+        return vec3(1.0);
+
+    if (MASK_TYPE == 0.0)
+        pos.x += pos.y * 3.0;
 
     pos.x = fract(pos.x / 6.0);
 
@@ -299,55 +219,45 @@ vec3 Mask(vec2 pos)
         mask.b = maskLight;
 
     return mask;
-#endif
 }
 
-// 1 inside the rounded glass, 0 outside, with a soft edge
-float Glass(vec2 pos)
+// Lightweight bloom from neighboring bright samples.
+// Uses hard samples on purpose: glow is blurry anyway, and this saves reads.
+vec3 Bloom(vec2 pos)
 {
-    vec2 p = abs(pos - 0.5) - (0.5 - CORNER_RADIUS);
-    float d = length(max(p, 0.0)) + min(max(p.x, p.y), 0.0) - CORNER_RADIUS;
-    return 1.0 - smoothstep(-0.003, 0.003, d);
+    vec3 sum = vec3(0.0);
+    float weights = 0.0;
+
+    for (int y = -1; y <= 1; y++)
+    {
+        for (int x = -2; x <= 2; x++)
+        {
+            vec2 offset = vec2(float(x), float(y));
+            float weight = exp2(
+                -0.7 * dot(offset, offset)
+            );
+
+            vec3 sampleColor = FetchPoint(pos, offset);
+            sum += max(sampleColor - vec3(0.65), 0.0) * weight;
+            weights += weight;
+        }
+    }
+
+    return sum / max(weights, 0.0001);
 }
 
 void main()
 {
     vec2 uv = openfl_TextureCoordv;
-    float t = mod(time, 1000.0);
-
     vec2 pos = Warp(uv);
 
-    // rare analog wobble: a short burst of wavy scanlines
-    float burst = step(0.985, Hash(vec2(floor(t * 12.0), 3.7)));
-    pos.x += GLITCH * burst * sin(pos.y * 500.0 + t * 30.0);
+    vec3 color = Tri(pos);
 
-    // the picture itself
-    vec3 color = Tri(pos) * Mask(uv * openfl_TextureSize.xy) * BRIGHTNESS;
-
-    // glow goes on top of the mask, because it happens in the glass
-    color += Bloom(pos);
-
-    // analog instability
-    color *= 1.0 + HUM_BAR * sin((pos.y - t * 0.15) * 6.2831853 * 2.0);
-    color *= 1.0 + FLICKER * sin(t * 47.0) * sin(t * 13.0);
-
-    // glass: black level, soft reflection, vignette, rounded corners
-    color += BLACK_LEVEL * vec3(0.8, 0.9, 1.0);
-    color += REFLECTION * vec3(0.9, 0.95, 1.0)
-        * smoothstep(0.55, 0.0, length((pos - vec2(0.22, 0.18)) * vec2(1.0, 1.6)));
-
-    vec2 q = pos - 0.5;
-    color *= (1.0 - VIGNETTE * dot(q, q) * 2.0) * Glass(pos);
+    color *= Mask(uv * openfl_TextureSize.xy);
+    color += Bloom(pos) * bloomAmount;
 
     color = ToSrgb(max(color, 0.0));
 
-    // a little extra colour, like the vivid phosphors of the time
-    color = mix(vec3(dot(color, vec3(0.299, 0.587, 0.114))), color, SATURATION);
-
-    // signal noise
-    color += (Hash(uv * openfl_TextureSize.xy + fract(t) * 91.7) - 0.5) * GRAIN;
-
-    vec4 source = flixel_texture2D(bitmap, uv);
-
-    gl_FragColor = vec4(clamp(color, 0.0, 1.0), source.a);
+    vec4 original = flixel_texture2D(bitmap, uv);
+    gl_FragColor = vec4(clamp(color, 0.0, 1.0), original.a);
 }
