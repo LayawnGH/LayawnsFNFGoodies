@@ -1,114 +1,114 @@
 {
 	"animations": [
 		{
-			"loop": false,
 			"offsets": [
 				10,
 				-2
 			],
+			"loop": false,
+			"fps": 12,
 			"anim": "singRIGHT",
-			"fps": 12,
-			"name": "Layawn_Left",
-			"indices": []
+			"indices": [],
+			"name": "Layawn_Left"
 		},
 		{
-			"loop": false,
 			"offsets": [
 				0,
 				0
 			],
-			"anim": "idle",
+			"loop": false,
 			"fps": 18,
-			"name": "Layawn_Idle",
-			"indices": []
+			"anim": "idle",
+			"indices": [],
+			"name": "Layawn_Idle"
 		},
 		{
+			"loop": false,
 			"offsets": [
 				5,
 				-6
 			],
-			"loop": false,
-			"fps": 12,
 			"anim": "singDOWN",
-			"indices": [],
-			"name": "layawn_down"
-		},
-		{
-			"loop": false,
-			"offsets": [
-				7,
-				-10
-			],
-			"anim": "singUP",
 			"fps": 12,
-			"name": "layawn_up",
+			"name": "layawn_down",
 			"indices": []
 		},
 		{
 			"offsets": [
-				16,
-				0
+				7,
+				-10
 			],
 			"loop": false,
-			"fps": 24,
-			"anim": "singLEFT",
+			"fps": 12,
+			"anim": "singUP",
 			"indices": [],
-			"name": "layawn_right"
+			"name": "layawn_up"
 		},
 		{
 			"loop": false,
+			"offsets": [
+				16,
+				0
+			],
+			"anim": "singLEFT",
+			"fps": 24,
+			"name": "layawn_right",
+			"indices": []
+		},
+		{
 			"offsets": [
 				10,
 				-2
 			],
-			"anim": "singRIGHTmiss",
+			"loop": false,
 			"fps": 24,
-			"name": "layawn_missleft",
-			"indices": []
+			"anim": "singRIGHTmiss",
+			"indices": [],
+			"name": "layawn_missleft"
 		},
 		{
-			"loop": false,
 			"offsets": [
 				5,
 				-6
 			],
-			"anim": "singDOWNmiss",
+			"loop": false,
 			"fps": 24,
-			"name": "layawn_missdown",
-			"indices": []
+			"anim": "singDOWNmiss",
+			"indices": [],
+			"name": "layawn_missdown"
 		},
 		{
+			"loop": false,
 			"offsets": [
 				7,
 				-10
 			],
-			"loop": false,
-			"fps": 24,
 			"anim": "singUPmiss",
-			"indices": [],
-			"name": "layawn_missup"
+			"fps": 24,
+			"name": "layawn_missup",
+			"indices": []
 		},
 		{
-			"loop": false,
 			"offsets": [
 				16,
 				0
 			],
-			"anim": "singLEFTmiss",
+			"loop": false,
 			"fps": 24,
-			"name": "layawn_missright",
-			"indices": []
+			"anim": "singLEFTmiss",
+			"indices": [],
+			"name": "layawn_missright"
 		},
 		{
-			"loop": false,
 			"offsets": [
 				0,
 				0
 			],
-			"anim": "hey",
+			"loop": false,
 			"fps": 12,
-			"name": "layawn_taunt",
-			"indices": []
+			"anim": "hey",
+			"indices": [],
+			"name": "layawn_taunt"
 		}
 	],
 	"vocals_file": null,
@@ -123,9 +123,9 @@
 	"healthicon": "layawn",
 	"flip_x": true,
 	"healthbar_colors": [
-		195,
-		255,
-		155
+		104,
+		178,
+		55
 	],
 	"camera_position": [
 		-70,
