@@ -1,0 +1,27 @@
+{
+	"songs": [
+		[
+			"sweetbearies",
+			"layawn",
+			[
+				126,
+				213,
+				75
+			]
+		]
+	],
+	"hiddenUntilUnlocked": false,
+	"hideFreeplay": false,
+	"weekBackground": "stage",
+	"difficulties": "Normal",
+	"weekCharacters": [
+		"dad",
+		"bf",
+		"gf"
+	],
+	"storyName": "Layawn is gay",
+	"weekName": "layawn",
+	"hideStoryMode": true,
+	"weekBefore": "tutorial",
+	"startUnlocked": true
+}
