@@ -20,6 +20,8 @@ function onCreate()
     addAnimationByPrefix('coolgrades', 'FC', 'GradeFC') 
     addAnimationByPrefix('coolgrades', 'NM', 'GradeNM') 
     addAnimationByPrefix('coolgrades', 'SFC', 'GradeSFC') 
+
+    playAnim('coolgrades', 'SFC', true)
     
     setObjectCamera('coolgrades','hud') -- puts the sprite on the HUD layer
     addLuaSprite('coolgrades') -- Actually make the sprite appear in my game
