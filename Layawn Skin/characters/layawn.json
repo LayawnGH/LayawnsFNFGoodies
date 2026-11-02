@@ -51,7 +51,7 @@
 				0
 			],
 			"anim": "singLEFT",
-			"fps": 24,
+			"fps": 12,
 			"name": "layawn_right",
 			"indices": []
 		},
